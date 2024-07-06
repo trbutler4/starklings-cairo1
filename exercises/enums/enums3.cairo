@@ -6,9 +6,6 @@
 
 use debug::PrintTrait;
 
-#[derive(Drop, Copy)]
-enum Message { // TODO: implement the message variant types based on their usage below
-}
 
 #[derive(Drop, Copy)]
 struct Point {
@@ -52,9 +49,21 @@ impl StateImpl of StateTrait {
     fn process(
         ref self: State, message: Message
     ) { // TODO: create a match expression to process the different message variants
+        match message {
+            Message::Quit => { self.quit() },
+            Message::ChangeColor( (r, g, b) ) => { self.change_color( (r, g, b) ) },
+            Message::Echo(msg) => { self.echo(msg) },
+            Message::Move(p) => { self.move_position(p) }
+        }
     }
 }
-
+#[derive(Drop, Copy)]
+enum Message { // TODO: implement the message variant types based on their usage below
+    ChangeColor: (u8, u8, u8),
+    Echo: felt252,
+    Move: Point,
+    Quit
+}
 
 #[test]
 fn test_match_message_call() {
